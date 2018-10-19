@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import config from '../config/default'
 import chalk from 'chalk'
 
-mongoose.connect(config.url)
+mongoose.connect(config.url,{ useNewUrlParser: true })
 const db = mongoose.connection
 
 db.once('open' ,() => {

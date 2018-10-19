@@ -3,6 +3,7 @@
 // import BaseComponent from '../../prototype/baseComponent'
 import Users from '../models/users'
 import formidable from 'formidable'
+import { Decrypt } from '../config/aes'
 
 class UsersContro {
 	constructor(){
@@ -11,14 +12,6 @@ class UsersContro {
 
 	}
 	async getUsers(req, res, next){
-		// const user_id = req.params.user_id;
-		// if (!user_id || !Number(user_id)) {
-		// 	res.send({
-		// 		type: 'ERROR_USER_ID',
-		// 		message: 'user_id参数错误',
-		// 	})
-		// 	return 
-		// }
 		try{
 			const userList = await Users.find( {},{_id:0} );
 			res.send(userList)
@@ -35,8 +28,11 @@ class UsersContro {
     // const user_id = req.params.user_id;
     const form = new formidable.IncomingForm()
     form.parse(req,async (err, fields, files) => {
-      const {name,pwd} = fields
-      console.log(name,7,pwd,9,req.body)
+      // const {name,pwd} = fields
+      
+      const name = Decrypt(fields.name)
+      const pwd = Decrypt(fields.pwd)
+      // console.log(name,7,pwd,9,fields)
       if (!name||!pwd) {
         res.status(400)
         res.send({
@@ -54,13 +50,13 @@ class UsersContro {
         return 
       }
       try {
-        const isname=await Users.find({name:fields.name})
+        const isname=await Users.find({name})
         if(isname.length>0){
           res.status(400)
           res.send({result:-1,message:'该用户已存在'})
           return
         }
-        const newUser = new Users(fields)
+        const newUser = new Users({name, pwd})
         await newUser.save()
         res.send({result:1,message:'添加成功'})
       }catch(e){
@@ -90,45 +86,8 @@ class UsersContro {
           })
           return 
         }
-        // try {
-        //   const isname=await Users.find({name:fields.name})
-        //   if(isname.length>0){
-        //     if(fields.type==='add'){
-        //       const newUser = new Users(fields)
-        //       await newUser.save()
-        //     }
-        //     res.status(400)
-        //     res.send({result:-1,message:'该用户已存在'})
-        //     return
-        //   }
-
-        //   res.send({result:1,message:'添加成功'})
-        // }catch(e){
-        //   res.status(500)
-        //   res.send({result:-1})
-        // }
       })
   }
-	// async getAddAddressById(req, res, next){
-	// 	const address_id = req.params.address_id;
-	// 	if (!address_id || !Number(address_id)) {
-	// 		res.send({
-	// 			type: 'ERROR_PARAMS',
-	// 			message: '参数错误',
-	// 		})
-	// 		return 
-	// 	}
-	// 	try{
-	// 		const address = await AddressModel.findOne({id: address_id});
-	// 		res.send(address)
-	// 	}catch(err){
-	// 		console.log('获取地址信息失败', err);
-	// 		res.send({
-	// 			type: 'ERROR_GET_ADDRESS',
-	// 			message: '获取地址信息失败'
-	// 		})
-	// 	}
-	// }
 }
 
 export default new UsersContro()
