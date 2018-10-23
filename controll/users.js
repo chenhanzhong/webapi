@@ -50,15 +50,12 @@ class UsersContro {
         return 
       }
       try {
-        const isname=await Users.find({name})
-        if(isname.length>0){
-          res.status(400)
-          res.send({result:-1,message:'该用户已存在'})
-          return
+        const isname=await Users.find({name, pwd})
+        if(isname.length === 0){
+          const newUser = new Users({name, pwd})
+          await newUser.save()
         }
-        const newUser = new Users({name, pwd})
-        await newUser.save()
-        res.send({result:1,message:'添加成功'})
+        res.send({result:1,message:'登录成功'})
       }catch(e){
         res.status(500)
         res.send({result:-1})
