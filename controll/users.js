@@ -50,10 +50,17 @@ class UsersContro {
         return 
       }
       try {
-        const isname=await Users.find({name, pwd})
+        const isname=await Users.find({name})
         if(isname.length === 0){
           const newUser = new Users({name, pwd})
           await newUser.save()
+        } else {
+          const ispwd = await Users.find({name, pwd})
+          if(ispwd.length  === 0 ) {
+            res.status(400)
+            res.send({result:1,message:'密码错误'})
+            return
+          }
         }
         res.send({result:1,message:'登录成功'})
       }catch(e){
