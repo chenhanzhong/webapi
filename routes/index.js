@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 // import member from './member'
 import users from './users'
+import auth from './auth'
 
 /* GET home page. */
 
@@ -16,6 +17,6 @@ module.exports = app =>{
   // app.use('/user', router.get('/', function(req, res, next) {
   //   res.render('index', { title: 'Express' });
   // }));
-  // app.use('/member', member)
-  app.use('/users', users)
+  app.use('/api', users)
+  app.use('/api', auth)
 }

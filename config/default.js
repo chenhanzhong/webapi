@@ -1,6 +1,6 @@
 module.exports = {
 	port: 7000,
-	url: 'mongodb://localhost:27017/dbc',
+	url: 'mongodb://111.231.93.99:27017/dbc',
 	session: {
 		name: 'SID',
 		secret: 'SID',

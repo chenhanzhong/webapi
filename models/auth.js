@@ -5,14 +5,20 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema;
 // 在mongoose里一切都由schema开始。每一个schema对应一个mongoDB collection 并且在那个collection里面定义了documents的模型。
 
-const users = new Schema({
-  id: Number,
+
+const auth = new Schema({
   name: String,
-  pwd: String
+  adress: String,
+  avatar: String,
+  birthday: String,
+  position: String,
+  hobby: String,
+  description: String,
+  hobby: String,
 })
 
-users.index({id: 1});   //创建索引
+auth.index({id: 2})
 
-const Users = mongoose.model('users', users);
+const Auth = mongoose.model('auth', auth);
 
-export default Users
+export default Auth

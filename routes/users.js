@@ -1,11 +1,13 @@
 import express from 'express'
-import User from '../controll/users'
+import * as Users from '../controll/users'
+
 const router = express.Router()
 
 /* GET users listing. */
-router.get('/', User.getUsers)
-router.post('/create', User.addUsers)
-router.post('/change', User.changeUsers)
+// router.get('/login', Users.getUsers)
+router.post('/login', Users.getUsers)
+router.post('/sign', Users.addUsers)
+router.post('/update', Users.updateUsers)
 // router.delete('/del', User.deleteUsers)
 
 export default router
